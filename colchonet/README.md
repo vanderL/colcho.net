@@ -1,4 +1,5 @@
 # Crud com algumas especificações
 Login de usúario
+Envio de email
 Upload de fotos.
-e css sem framework.
+e Sass.
