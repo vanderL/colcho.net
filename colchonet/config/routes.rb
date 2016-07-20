@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :rooms
   root "home#index"
   resources :users
+
+  resource :confirmation, only:[:show]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
