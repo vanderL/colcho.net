@@ -1,0 +1,10 @@
+<nav>
+	<ul>
+		<li> <%= link_to "Cadastre seu quartos", new_room_path %> </li>
+		<li> <%= link_to "Quartos", rooms_path %> </li>
+		<li> <%= link_to "Meu Perfil", user_path(current_user) %> </li>
+		<li> 
+		<a href="user_sessions" data-method="delete" rel="nofollow"> Sair</a>
+		</li>
+	</ul>
+</nav>

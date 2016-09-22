@@ -1,4 +1,10 @@
 class User < ActiveRecord::Base
+
+	has_many :rooms
+	
+	scope :most_recent, -> { order('created_at DESC') }
+	scope :from_fortal, -> { where(location: 'fortaleza Ce') }
+	scope :confirmed, -> {where.not(confirmed_at: nil)}
 	#EMAIL_REGEXP = /\A[^@]+@([^@\.]+\.)+[@\.]+\z/
 
 	validates_presence_of :email, :full_name, :location
@@ -23,6 +29,9 @@ class User < ActiveRecord::Base
 	def confirmed?
 		confirmed_at.present?
 		
+	end
+	def self.authenticate(email, password)
+		confirmed.find_by(email: email).try(:authenticate, password)
 	end
 	#Essa validação pode ser representada da seguinte forma:
 	 #validates_format_of :email, with EMAIL_REGEXP
