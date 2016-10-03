@@ -3,17 +3,17 @@ class RoomsController < ApplicationController
   before_action :set_users_room, only:[:edit, :update, :destroy]
 
   before_action :require_authentication, only: [:new, :edit, :create, :update, :destroy]
-  PER_PAGE = 10
+  PER_PAGE = 4
 
   # GET /rooms
   # GET /rooms.json
   def index
-       @search_query = params[:q]
+    @search_query = params[:q]
 
-       rooms = Room.search(@search_query).most_recent
-       @rooms = rooms.map do |room|
-          RoomPresenter.new(room, self, false)
-        end
+    rooms = Room.search(@search_query).most_recent.page(params[:page]).per(PER_PAGE)
+
+    @rooms = RoomCollectionPresenter.new(rooms, self)
+    
   end
 
   # GET /rooms/1
@@ -71,12 +71,12 @@ class RoomsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_room
-      room_model = Room.find(params[:id])
+      room_model = Room.friendly.find(params[:id])
       @room = RoomPresenter.new(room_model, self)
     end
 
     def set_users_room
-      @room = current_user.rooms.find(params[:id])
+      @room = current_user.rooms.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

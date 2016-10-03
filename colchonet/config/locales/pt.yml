@@ -1,4 +1,11 @@
 pt:
+  views:
+    pagination:
+      first: "&laquo; Primeira"
+      last: "Última &raquo;"
+      previous: "&lsaquo; Anterior"
+      next: "Próxima &rsaquo;"
+      truncate: "..."
   general:
     form_error: Há erros no formulário, por favor verifique.
   
