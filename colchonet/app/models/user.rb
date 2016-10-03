@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
 
-	has_many :rooms
-	
+	has_many :rooms, dependent: :destroy
+	has_many :reviews, dependent: :destroy
+	has_many :reviewed_rooms, through: :reviews, source: :room
+
 	scope :most_recent, -> { order('created_at DESC') }
 	scope :from_fortal, -> { where(location: 'fortaleza Ce') }
 	scope :confirmed, -> {where.not(confirmed_at: nil)}

@@ -3,17 +3,25 @@ class RoomsController < ApplicationController
   before_action :set_users_room, only:[:edit, :update, :destroy]
 
   before_action :require_authentication, only: [:new, :edit, :create, :update, :destroy]
-
+  PER_PAGE = 10
 
   # GET /rooms
   # GET /rooms.json
   def index
-    @rooms = Room.all
+       @search_query = params[:q]
+
+       rooms = Room.search(@search_query).most_recent
+       @rooms = rooms.map do |room|
+          RoomPresenter.new(room, self, false)
+        end
   end
 
   # GET /rooms/1
   # GET /rooms/1.json
   def show
+    if user_signed_in?
+      @user_review = @room.reviews.find_or_initialize_by(user_id: current_user.id)
+    end
   end
 
   # GET /rooms/new
@@ -63,7 +71,8 @@ class RoomsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_room
-      @room = Room.find(params[:id])
+      room_model = Room.find(params[:id])
+      @room = RoomPresenter.new(room_model, self)
     end
 
     def set_users_room

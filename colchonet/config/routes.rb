@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   resources :rooms
   root "home#index"
   resources :users
+  resources :rooms do 
+    resources :reviews, only: [:create, :update], module: :rooms
+  end
 
   resource :user_sessions, only: [:create, :new, :destroy]
   resource :confirmation, only:[:show]
